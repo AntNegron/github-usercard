@@ -1,9 +1,19 @@
+const { default: axios } = require("axios");
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+axios.get('https://api.github.com/users/AntNegron')
+.then (resp => {
+  const accData = resp.data;
+  const newCard = getGit(accData);
+  const cardsDiv = document.querySelector('.cards');
+  cardsDiv.appendChild(newCard);
+}).catch(err => {
+  console.log(err);
+})
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,8 +38,25 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'https://api.github.com/users/tetondan',
+  'https://api.github.com/users/dustinmyers',
+  'https://api.github.com/users/justsml',
+  'https://api.github.com/users/luishrd',
+  'https://api.github.com/users/bigknell',
+];
 
+followersArray.forEach(followers => {
+  axios.get(followers)
+   .then (resp => {
+     const accData = resp.data;
+     const newCard = getGit(accData);
+     const cardsDiv = document.querySelector('.cards');
+     cardsDiv.appendChild(newCard);
+   }).catch(err => {
+     console.log(err);
+   })
+})
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -58,3 +85,48 @@ const followersArray = [];
     luishrd
     bigknell
 */
+function getGit({ avatar_url, name, login, location, html_url, followers, following, bio }) {
+
+
+
+// html elements
+  const card = document.createElement('div');
+  const avatar = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const realName = document.createElement('h3');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const userLink = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+
+  avatar.src = avatar_url;
+  realName.textContent = name;
+  userName.textContent = login;
+  userLocation.textContent = location;
+  userLink.src = html_url;
+  userFollowers.textContent = followers;
+  userFollowing.textContent = following;
+  userBio.textContent = bio;
+
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  realName.classList.add('name');
+  userName.classList.add('username');
+
+  card.appendChild(avatar);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(realName);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(userProfile);
+  userProfile.appendChild(userLink);
+  cardInfo.appendChild(userFollowers);
+  cardInfo.appendChild(userFollowing);
+  cardInfo.appendChild(userBio);
+
+  return card;
+}
