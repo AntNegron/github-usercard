@@ -87,8 +87,6 @@ followersArray.forEach(followers => {
 */
 function getGit({ avatar_url, name, login, location, html_url, followers, following, bio }) {
 
-
-
 // html elements
   const card = document.createElement('div');
   const avatar = document.createElement('img');
@@ -110,7 +108,6 @@ function getGit({ avatar_url, name, login, location, html_url, followers, follow
   userFollowers.textContent = followers;
   userFollowing.textContent = following;
   userBio.textContent = bio;
-
 
   card.classList.add('card');
   cardInfo.classList.add('card-info');
